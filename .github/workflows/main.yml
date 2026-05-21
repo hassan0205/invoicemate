@@ -1,0 +1,25 @@
+name: Deploy InvoiceMate
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Stop Existing Containers
+        run: docker compose down
+
+      - name: Build And Deploy
+        run: docker compose up --build -d
+
+      - name: Cleanup Docker Images
+        run: docker image prune -f
